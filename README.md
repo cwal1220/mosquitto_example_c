@@ -1,2 +1,2 @@
 # mosquitto_example_c
-libmosquitto c example
+libmosquitto pub/sub example
