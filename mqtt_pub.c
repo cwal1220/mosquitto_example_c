@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include <mosquitto.h>
 
 #define QOS 2
-#define TOPIC "CHAN"
+#define PUB_TOPIC "CHAN"
 
 int main()
 {
@@ -13,7 +14,7 @@ int main()
 
 	mosquitto_lib_init();
 
-	mosq = mosquitto_new("publisher-test", true, NULL);
+	mosq = mosquitto_new("pub-test", true, NULL);
 	mosquitto_opts_set(mosq, MOSQ_OPT_TCP_NODELAY, 1);
 
 	rc = mosquitto_connect(mosq, "192.168.219.173", 1883, 60);
@@ -24,11 +25,11 @@ int main()
 	}
 	printf("We are now connected to the broker!\n");
 	mosquitto_loop_start(mosq);
-	for(int i=0; i<1000; i++)
+	for(int i=0; i<10; i++)
 	{
 		sprintf(payload, "HELLO: %d", i);
-		mosquitto_publish(mosq, NULL, TOPIC, strlen(payload), payload, QOS, false);
-		usleep(1000*10);
+		mosquitto_publish(mosq, NULL, PUB_TOPIC, strlen(payload), payload, QOS, false);
+		usleep(1000*1000);
 	}
 	
 	//mosquitto_loop_start(mosq);
